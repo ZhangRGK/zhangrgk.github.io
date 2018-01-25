@@ -1,20 +1,90 @@
----
----
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="https://www.w3.org/2005/Atom" xmlns:dc="https://purl.org/dc/elements/1.1/">
   <channel>
-    <title>{{ site.name | xml_escape }}</title>
-    <description>{% if site.description %}{{ site.description | xml_escape }}{% endif %}</description>
-    <link>{{ site.url }}</link>
-    <atom:link href="{{ page.path | absolute_url }}" rel="self" type="application/rss+xml" />
-    {% for post in site.posts limit:10 %}
+    <title>ZhangRGK</title>
+    <description></description>
+    <link>http://blog.zhangrgk.ninja</link>
+    <atom:link href="http://blog.zhangrgk.ninja/feed.xml" rel="self" type="application/rss+xml" />
+    
       <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>{{ post.description | xml_escape }}</description>
-        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        <link>{{ post.url | absolute_url }}</link>
-        <guid isPermaLink="true">{{ post.url | absolute_url }}</guid>
+        <title>张锐的简历</title>
+        <description></description>
+        <pubDate>Tue, 27 Jun 2017 00:00:00 +0800</pubDate>
+        <link>http://blog.zhangrgk.ninja/posts/resume</link>
+        <guid isPermaLink="true">http://blog.zhangrgk.ninja/posts/resume</guid>
       </item>
-    {% endfor %}
+    
+      <item>
+        <title>Vue 最佳实践</title>
+        <description></description>
+        <pubDate>Wed, 01 Mar 2017 00:00:00 +0800</pubDate>
+        <link>http://blog.zhangrgk.ninja/posts/vue-best-practice</link>
+        <guid isPermaLink="true">http://blog.zhangrgk.ninja/posts/vue-best-practice</guid>
+      </item>
+    
+      <item>
+        <title>Vuex 单元测试</title>
+        <description></description>
+        <pubDate>Sun, 08 Jan 2017 00:00:00 +0800</pubDate>
+        <link>http://blog.zhangrgk.ninja/posts/vuex2-unit-test</link>
+        <guid isPermaLink="true">http://blog.zhangrgk.ninja/posts/vuex2-unit-test</guid>
+      </item>
+    
+      <item>
+        <title>Redux 还不够好</title>
+        <description></description>
+        <pubDate>Tue, 06 Dec 2016 00:00:00 +0800</pubDate>
+        <link>http://blog.zhangrgk.ninja/posts/redux-is-not-good-enough</link>
+        <guid isPermaLink="true">http://blog.zhangrgk.ninja/posts/redux-is-not-good-enough</guid>
+      </item>
+    
+      <item>
+        <title>在 Electron 里使用 Sequelize 和 SQLite3</title>
+        <description></description>
+        <pubDate>Tue, 26 Jul 2016 00:00:00 +0800</pubDate>
+        <link>http://blog.zhangrgk.ninja/posts/use-sequelize-and-sqlite3-in-electron</link>
+        <guid isPermaLink="true">http://blog.zhangrgk.ninja/posts/use-sequelize-and-sqlite3-in-electron</guid>
+      </item>
+    
+      <item>
+        <title>刻奇</title>
+        <description></description>
+        <pubDate>Sat, 23 Apr 2016 00:00:00 +0800</pubDate>
+        <link>http://blog.zhangrgk.ninja/posts/kitsch</link>
+        <guid isPermaLink="true">http://blog.zhangrgk.ninja/posts/kitsch</guid>
+      </item>
+    
+      <item>
+        <title>如何把 git bare repo 变成普通 repo</title>
+        <description></description>
+        <pubDate>Thu, 24 Mar 2016 00:00:00 +0800</pubDate>
+        <link>http://blog.zhangrgk.ninja/posts/how-to-canvert-a-bare-git-repo-to-normal</link>
+        <guid isPermaLink="true">http://blog.zhangrgk.ninja/posts/how-to-canvert-a-bare-git-repo-to-normal</guid>
+      </item>
+    
+      <item>
+        <title>用 JavaScript 写 Alfred Workflow</title>
+        <description></description>
+        <pubDate>Fri, 12 Feb 2016 00:00:00 +0800</pubDate>
+        <link>http://blog.zhangrgk.ninja/posts/write-alfred-workflow-by-js</link>
+        <guid isPermaLink="true">http://blog.zhangrgk.ninja/posts/write-alfred-workflow-by-js</guid>
+      </item>
+    
+      <item>
+        <title>IF-ELSE 重构</title>
+        <description></description>
+        <pubDate>Thu, 11 Feb 2016 00:00:00 +0800</pubDate>
+        <link>http://blog.zhangrgk.ninja/posts/if-else-refactoring</link>
+        <guid isPermaLink="true">http://blog.zhangrgk.ninja/posts/if-else-refactoring</guid>
+      </item>
+    
+      <item>
+        <title>光明王</title>
+        <description></description>
+        <pubDate>Sat, 31 Oct 2015 00:00:00 +0800</pubDate>
+        <link>http://blog.zhangrgk.ninja/posts/lord-of-light</link>
+        <guid isPermaLink="true">http://blog.zhangrgk.ninja/posts/lord-of-light</guid>
+      </item>
+    
   </channel>
 </rss>

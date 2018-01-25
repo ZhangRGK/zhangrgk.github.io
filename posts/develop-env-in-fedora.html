@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>ZhangRGK | 把 Fedora 打造成我的开发环境(然而我用os x)</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="把 Fedora 打造成我的开发环境(然而我用os x)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://blog.zhangrgk.ninja/posts/develop-env-in-fedora">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="ZhangRGK">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="http://blog.zhangrgk.ninja/posts/develop-env-in-fedora">
+  <meta name="twitter:title" content="把 Fedora 打造成我的开发环境(然而我用os x)">
+  <meta name="twitter:description" content="">
+
+  
+    <meta property="og:image" content="http://blog.zhangrgk.ninja/assets/og-image-ee46bbc61b334e821e81534b1fd43f3fee6f020ec174b3c2114445695fd48c01.jpg">
+    <meta name="twitter:image" content="http://blog.zhangrgk.ninja/assets/og-image-ee46bbc61b334e821e81534b1fd43f3fee6f020ec174b3c2114445695fd48c01.jpg">
+  
+
+  <link href="http://blog.zhangrgk.ninja/feed.xml" type="application/rss+xml" rel="alternate" title="ZhangRGK Last 10 blog posts" />
+
+  
+
+  
+    <link rel="icon" type="image/x-icon" href="/assets/favicon-dark-11327753546b2135c989eee5cd83497a2734b702928d016839d795f6c706e3d5.ico">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon-dark-d161409442b7e523089f24d08d0a55951549ece7504207c376d53b020713494d.png">
+    <link rel="stylesheet" type="text/css" href="/assets/dark-25d66fc3f921e5519db74205d26c444fcbb4dc72c17f70be93fa8e8cf33d5049.css">
+  
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="ZhangRGK">ZhangRGK</a>
+  <ul class="header-links">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</nav>
+
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>把 Fedora 打造成我的开发环境(然而我用os x)</h1>
+            <p></p>
+            <div class="article-list-footer">
+              <span class="article-list-date">
+                March 1, 2015
+              </span>
+              <span class="article-list-divider">-</span>
+              <span class="article-list-minutes">
+                
+                
+                  2 minute read
+                
+              </span>
+              <span class="article-list-divider">-</span>
+              <div class="article-list-tags">
+                
+              </div>
+            </div>
+          </header>
+
+          <div class="article-content">
+            <h4 id="安装-chrome">安装 chrome</h4>
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum install -y vim
+sudo vim /etc/yum.repos.d/google_chrome.repo
+</code></pre></div></div>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[google-chrome-64]
+name=google-chrome - 64-bit
+baseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64
+enabled=1
+gpgcheck=1
+gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
+</code></pre></div></div>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum install -y google-chrome-stable
+</code></pre></div></div>
+
+<p>p.s. 当然要翻墙，不然连不上google的验证服务器。</p>
+
+<h4 id="安装fastestmirror">安装fastestmirror</h4>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum install -y yum-plugin-fastestmirror
+</code></pre></div></div>
+
+<h4 id="删除没用的库">删除没用的库</h4>
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum -y remove abrt* calligra* ktp*
+</code></pre></div></div>
+
+<h4 id="添加源">添加源</h4>
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo rpm -ivh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm
+</code></pre></div></div>
+
+<p>按照 <a href="http://mirrors.163.com/.help/fedora.html">这里</a>说的添加网易源</p>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum makecache
+</code></pre></div></div>
+
+<h4 id="安装-rime">安装 rime</h4>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum install -y ibus-rime
+</code></pre></div></div>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ibus-daemon -dxr
+</code></pre></div></div>
+
+<h4 id="安装-node">安装 Node</h4>
+
+<p>yum源貌似已经没有跟进新版的Node了，所以用源码安装</p>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /usr/local/src/
+wget https://nodejs.org/dist/v5.3.0/node-v5.3.0.tar.gz
+tar xvf node-v5.3.0.tar.gz
+cd node-v5.3.0
+./configure
+make &amp;&amp; make install
+cp /usr/local/bin/node /usr/sbin/
+</code></pre></div></div>
+
+<h4 id="安装-git">安装 Git</h4>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum install git
+</code></pre></div></div>
+
+<h4 id="安装-pip">安装 pip</h4>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum install python-pip
+</code></pre></div></div>
+
+<h4 id="安装python库">安装python库</h4>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo pip install tornado
+</code></pre></div></div>
+
+<p>其他的按照具体要求再慢慢搞定了</p>
+
+<h4 id="安装-sublime-text-3">安装 sublime text 3</h4>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/sh</span>
+
+<span class="c"># Sublime Text 3 install with Package Control</span>
+
+curl <span class="nt">-o</span> ~/st3.tar.bz2 http://c758482.r82.cf2.rackcdn.com/sublime_text_3_build_3065_x64.tar.bz2
+<span class="k">if </span><span class="nb">tar</span> <span class="nt">-xf</span> ~/st3.tar.bz2 <span class="nt">--directory</span><span class="o">=</span><span class="nv">$HOME</span><span class="p">;</span> <span class="k">then
+  </span><span class="nb">sudo mv</span> ~/sublime_text_3/ /usr/local/
+  <span class="nb">sudo ln</span> <span class="nt">-s</span> /usr/local/sublime_text_3/sublime_text /bin/subl
+<span class="k">fi
+</span><span class="nb">rm</span> ~/st3.tar.bz2
+
+
+<span class="c"># Package Control - The Sublime Text Package Manager: https://sublime.wbond.net</span>
+curl <span class="nt">-o</span> ~/Package<span class="se">\ </span>Control.sublime-package https://sublime.wbond.net/Package%20Control.sublime-package
+<span class="nb">sudo mv</span> ~/Package<span class="se">\ </span>Control.sublime-package /usr/local/sublime_text_3/Packages/
+
+
+<span class="c"># Add to applications list</span>
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> &gt; ~/.local/share/applications/sublime.desktop
+[Desktop Entry]
+Name=Sublime Text
+Exec=subl %F
+MimeType=text/plain;
+Terminal=false
+Type=Application
+Icon=/usr/local/sublime_text_3/Icon/128x128/sublime-text.png
+Categories=Utility;TextEditor;Development;
+</span><span class="no">EOF
+
+
+</span><span class="nb">echo</span> <span class="s2">""</span>
+<span class="nb">echo</span> <span class="s2">"Sublime Text 3 installed successfully!"</span>
+<span class="nb">echo</span> <span class="s2">"Run with: subl"</span>
+</code></pre></div></div>
+
+<p>把以上内容保存成 install_st3.sh，然后运行</p>
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chmod +x install_st3.sh
+sh ./install_st3.sh
+</code></pre></div></div>
+
+<p>sublime text 3 的配置可以参考<a href="http://zhangrgk.com/xue-bu-hui-vimde-ren-zen-yang-bai-tuo-idede-fan-nao/">这篇博客</a></p>
+
+<h4 id="安装pg">安装PG</h4>
+
+<div class="bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum install postgresql postgresql-server pgadmin3 postgresql-contrib
+</code></pre></div></div>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%E6%8A%8A+Fedora+%E6%89%93%E9%80%A0%E6%88%90%E6%88%91%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83(%E7%84...%20-%20http://blog.zhangrgk.ninja/posts/develop-env-in-fedora" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://blog.zhangrgk.ninja/posts/develop-env-in-fedora" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+            <a href="https://plus.google.com/share?url=http://blog.zhangrgk.ninja/posts/develop-env-in-fedora" title="Share on Google+" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 128 128"><path d="M40.7 55.9v16.1c0 0 15.6 0 22 0C59.2 82.5 53.8 88.2 40.7 88.2c-13.3 0-23.7-10.8-23.7-24.2s10.4-24.2 23.7-24.2c7.1 0 11.6 2.5 15.8 5.9 3.3-3.3 3.1-3.8 11.6-11.9 -7.2-6.6-16.8-10.6-27.4-10.6C18.2 23.3 0 41.5 0 64c0 22.5 18.2 40.7 40.7 40.7 33.6 0 41.8-29.3 39-48.8H40.7zM113.9 56.7V42.6h-10.1v14.1H89.4v10.1h14.5v14.5h10.1V66.8H128V56.7H113.9z"/></svg>
+            </a>
+          </div>
+
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+
+<script type="text/javascript" src="/assets/vendor-2e5becc015a837c852edabccbc32f5a390d4afa7a2ca601db948ea5b9e50292a.js"></script>
+
+
+  <script type="text/javascript" src="/assets/webfonts-e3010885de8c083c4b2935d463b1649e8796191a66a1b43bb87ef04bbcce420d.js"></script>
+
+
+
+  <script type="text/javascript" src="/assets/scrollappear-e2da8ea567e418637e31266cc5302126eaa79f62a2273739086358b589a89ee6.js"></script>
+
+
+<script type="text/javascript" src="/assets/application-cd43a7f9bd8a08997bb19229cd040e7129ede0a1adf77c693b5835c9f8c2a4b1.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>ZhangRGK | 基于 Vue.js 与 Tornado Template 的前端模块化方案</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="基于 Vue.js 与 Tornado Template 的前端模块化方案">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://blog.zhangrgk.ninja/posts/ji-yu-vuede-qian-duan-mo-kuai-hua-fang-an">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="ZhangRGK">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="http://blog.zhangrgk.ninja/posts/ji-yu-vuede-qian-duan-mo-kuai-hua-fang-an">
+  <meta name="twitter:title" content="基于 Vue.js 与 Tornado Template 的前端模块化方案">
+  <meta name="twitter:description" content="">
+
+  
+    <meta property="og:image" content="http://blog.zhangrgk.ninja/assets/og-image-ee46bbc61b334e821e81534b1fd43f3fee6f020ec174b3c2114445695fd48c01.jpg">
+    <meta name="twitter:image" content="http://blog.zhangrgk.ninja/assets/og-image-ee46bbc61b334e821e81534b1fd43f3fee6f020ec174b3c2114445695fd48c01.jpg">
+  
+
+  <link href="http://blog.zhangrgk.ninja/feed.xml" type="application/rss+xml" rel="alternate" title="ZhangRGK Last 10 blog posts" />
+
+  
+
+  
+    <link rel="icon" type="image/x-icon" href="/assets/favicon-dark-11327753546b2135c989eee5cd83497a2734b702928d016839d795f6c706e3d5.ico">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon-dark-d161409442b7e523089f24d08d0a55951549ece7504207c376d53b020713494d.png">
+    <link rel="stylesheet" type="text/css" href="/assets/dark-25d66fc3f921e5519db74205d26c444fcbb4dc72c17f70be93fa8e8cf33d5049.css">
+  
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="ZhangRGK">ZhangRGK</a>
+  <ul class="header-links">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</nav>
+
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>基于 Vue.js 与 Tornado Template 的前端模块化方案</h1>
+            <p></p>
+            <div class="article-list-footer">
+              <span class="article-list-date">
+                March 1, 2015
+              </span>
+              <span class="article-list-divider">-</span>
+              <span class="article-list-minutes">
+                
+                
+                  1 minute read
+                
+              </span>
+              <span class="article-list-divider">-</span>
+              <div class="article-list-tags">
+                
+              </div>
+            </div>
+          </header>
+
+          <div class="article-content">
+            <h4 id="技术背景">技术背景</h4>
+
+<ul>
+  <li>Python</li>
+  <li>tornadoweb</li>
+  <li>Vuejs</li>
+</ul>
+
+<h4 id="要求">要求</h4>
+
+<ul>
+  <li>复用分为三种粒度：模块，组件，代码段</li>
+  <li>模块与组件的重用支持覆盖</li>
+  <li>尽可能对设计师友好</li>
+</ul>
+
+<h4 id="思路">思路</h4>
+
+<ol>
+  <li>代码段复用HTML语法支持（AMD），不需要考虑太多；</li>
+  <li>组件复用基本上是遵循Vuejs的逻辑（也是MVVM的方式），以Directive，Filter和Component的方式复用。</li>
+  <li>模块复用使用 tornado ui module 。将一部分后端代码与独立的html，js，css打包成一个模块使用。</li>
+</ol>
+
+<p>但是，还有几个问题没有解决</p>
+
+<ol>
+  <li>HTML并没有include，extends的能力，无法做到灵活的替换组件中部分内容；</li>
+  <li>设计师必须具有Python和tornadoweb知识，才能使用模块与组件；</li>
+</ol>
+
+<p>最终没有找到能完美满足要求的方案，妥协后决定引入 tornadoweb template 模块来解决include和extends的问题。而对设计师技能要求的问题只能通过尽量简化项目结构和技术之外的方式来解决。</p>
+
+<h4 id="解决方案">解决方案</h4>
+
+<h6 id="模块复用">模块复用</h6>
+
+<p>使用tornadoweb ui module 来完成；</p>
+
+<p>用之前需要把 ui module 库加入到 PYTHONPATH 环境变量中。</p>
+
+<p>定义(仅作参考，以官方最新API为准)</p>
+<div class="python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MyModule
+    def render(self, entry, show_comments=False):
+        '''
+        指定渲染的模板和参数
+        '''
+        return self.render_string("my_module.html", **params)
+    def js_file(self):
+    	'''
+        指定js文件，重写css_file也可以指定css文件
+        embedded_css和embedded_js可以直接写css和js代码，但是太奇葩了还是不用的好
+        '''
+        return "path_to_js.js"
+</code></pre></div></div>
+
+<p>使用(在 tornado template 中)</p>
+
+<div class="python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import MyModule
+</code></pre></div></div>
+
+<div class="html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+{% module MyModule(params=params) %}
+
+</code></pre></div></div>
+<h6 id="组件复用">组件复用</h6>
+
+<p>因为使用了tornado template，而且 tornado不能指定多个template目录，所以需要将组件库引入到template目录中；</p>
+
+<p>我最终选择的是git submodule</p>
+
+<p>定义:my_component.html</p>
+<div class="html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+{% block html %}
+&lt;!-- html tags --&gt;
+{% end %}
+{% block css %}
+// css
+{% end %}
+{% block js %}
+// js
+{% end %}
+
+</code></pre></div></div>
+<p>注意：如果定义中使用了第三方库，需要自己处理依赖与加载顺序的问题。</p>
+
+<p>使用:</p>
+<div class="html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+{% include lib/my_component.html %}
+
+</code></pre></div></div>
+
+<h6 id="代码段">代码段</h6>
+
+<p>除了AMD引入之外，也可以通过前两种方式引入，</p>
+
+<p>但是，tornado ui module 默认是将js添加到html末尾，如果有需要修改引入位置，可以参考这一篇博客:</p>
+
+<p><a href="http://bigzhu.org/blog/tornador%20UI%20module%20%E4%BF%AE%E6%94%B9%20js%20%E5%B5%8C%E5%85%A5%E4%BD%8D%E7%BD%AE">tornador UI module 修改 js 嵌入位置</a></p>
+
+<h4 id="完">完</h4>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%E5%9F%BA%E4%BA%8E+Vue.js+%E4%B8%8E+Tornado+Template+%E7%9A%84%E5%89%8D%E7%AB%AF%E6%A8%A1%E5%9D%97%E5%8C%96...%20-%20http://blog.zhangrgk.ninja/posts/ji-yu-vuede-qian-duan-mo-kuai-hua-fang-an" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://blog.zhangrgk.ninja/posts/ji-yu-vuede-qian-duan-mo-kuai-hua-fang-an" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+            <a href="https://plus.google.com/share?url=http://blog.zhangrgk.ninja/posts/ji-yu-vuede-qian-duan-mo-kuai-hua-fang-an" title="Share on Google+" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 128 128"><path d="M40.7 55.9v16.1c0 0 15.6 0 22 0C59.2 82.5 53.8 88.2 40.7 88.2c-13.3 0-23.7-10.8-23.7-24.2s10.4-24.2 23.7-24.2c7.1 0 11.6 2.5 15.8 5.9 3.3-3.3 3.1-3.8 11.6-11.9 -7.2-6.6-16.8-10.6-27.4-10.6C18.2 23.3 0 41.5 0 64c0 22.5 18.2 40.7 40.7 40.7 33.6 0 41.8-29.3 39-48.8H40.7zM113.9 56.7V42.6h-10.1v14.1H89.4v10.1h14.5v14.5h10.1V66.8H128V56.7H113.9z"/></svg>
+            </a>
+          </div>
+
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+
+<script type="text/javascript" src="/assets/vendor-2e5becc015a837c852edabccbc32f5a390d4afa7a2ca601db948ea5b9e50292a.js"></script>
+
+
+  <script type="text/javascript" src="/assets/webfonts-e3010885de8c083c4b2935d463b1649e8796191a66a1b43bb87ef04bbcce420d.js"></script>
+
+
+
+  <script type="text/javascript" src="/assets/scrollappear-e2da8ea567e418637e31266cc5302126eaa79f62a2273739086358b589a89ee6.js"></script>
+
+
+<script type="text/javascript" src="/assets/application-cd43a7f9bd8a08997bb19229cd040e7129ede0a1adf77c693b5835c9f8c2a4b1.js"></script>
+
+</body>
+</html>
